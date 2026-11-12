@@ -27,8 +27,10 @@ def get_whole_number(prompt, minimum, maximum):
         text = input(prompt).strip()
         if text.isdigit():
             value = int(text)
-            if minimum <= value < maximum:
-                return text
+            #  12/11/2026 Corrected by JS | Needed to be <= the maximum to allow for the maximum to be entered.
+            if minimum <= value <= maximum:
+                # 12/11/2026 Corrected by JS | Needs to return value not text. Corrected to value
+                return value
         print(f"Please enter a whole number from {minimum} to {maximum}.")
 
 
@@ -51,17 +53,19 @@ def get_choice(prompt, options):
 
 def calculate_subtotal(sessions, time_slot):
     """Return the cost of all sessions before any discount is taken off."""
+    # 12/11/2026 Corrected by JS | Base price must be
     subtotal = sessions * BASE_PRICE
     if time_slot == "peak":
         subtotal = subtotal + PEAK_SURCHARGE
     return subtotal
 
-
-def session_discount(sessions)
+# 12/11/2026 Corrected by JS | Added a colon after "(sessions):"
+def session_discount(sessions):
     """Return the percentage discount for the number of sessions booked."""
     if sessions >= 10:
         return 10
-    elif sessions > 5:
+    # 12/11/2026 Corrected by JS | Incorrectly unincludes the session number being 5 which should have a 5% discount.
+    elif sessions >= 5:
         return 5
     return 0
 
@@ -93,7 +97,8 @@ def main():
     time_slot = get_choice("Time slot (peak/off-peak): ", TIME_SLOTS)
     years = get_whole_number("Years of membership (0-50): ", 0, 50)
 
-    subtotal = calculate_subtotal(sessions, timeslot)
+    # 12/11/2026 Corrected by JS | Added an underscore between time and slot to read time_slot rather than timeslot
+    subtotal = calculate_subtotal(sessions, time_slot)
     member_pct = MEMBERSHIP_DISCOUNTS[membership]
     session_pct = session_discount(sessions)
     loyalty_pct = loyalty_discount(years)
